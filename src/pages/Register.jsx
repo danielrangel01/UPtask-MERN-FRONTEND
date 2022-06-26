@@ -1,57 +1,67 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import Alerta from "../components/Alerta";
+import Alert from "../components/Alert";
 import axios from "axios";
-function Registrar() {
-  const [nombre, setNombre] = useState("");
+function Register() {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [repetirPassword, setRepetirPassword] = useState("");
-  const [alerta, setAlerta] = useState({});
+  const [RepeatPassword, setRepeatPassword] = useState("");
+  const [alert, setAlert] = useState({});
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if ([nombre, email, password, repetirPassword].includes("")) {
-      setAlerta({
+    if ([nombre, email, password, RepeatPassword].includes("")) {
+      setAlert({
         msg: "Todos los campos son obligatorios",
         error: true,
       });
       return;
     }
 
-    if (password !== repetirPassword) {
-      setAlerta({ msg: "Los password no son iguales", error: true });
+    if (password !== RepeatPassword) {
+      setAlert({ msg: "Los password no son iguales", error: true });
       return;
     }
 
     if (password.length < 6) {
-      setAlerta({
+      setAlert({
         msg: "El password es muy corto, agrega minimo 6 caracteres",
         error: true,
       });
       return;
     }
 
-    setAlerta({});
+    setAlert({});
 
-    // creando usuario
+    // create user
 
     try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/usuarios`,
+        {
+          nombre,
+          password,
+          email,
+        }
+      );
 
-      const {data} = await axios.post('http://localhost:4000/api/usuarios', {
-        nombre,
-        password,
-        email,
-      })
-      console.log(data);
+      setAlert({
+        msg: data.msg,
+        error: false,
+      });
+
+      setName("");
+      setEmail("");
+      setPassword("");
+      setRepeatPassword("");
     } catch (error) {
       console.log(error);
     }
-   
   };
 
-  const { msg } = alerta;
+  const { msg } = alert;
 
   return (
     <>
@@ -59,7 +69,7 @@ function Registrar() {
         Crea tu cuenta y administra tus{" "}
         <span className="text-slate-700">proyectos</span>
       </h1>
-      {msg && <Alerta alerta={alerta} />}
+      {msg && <Alert alert={alert} />}
       <form
         className="my-10 bg-white shadow rounded-lg p-10"
         onSubmit={handleSubmit}
@@ -73,9 +83,9 @@ function Registrar() {
           </label>
           <input
             type="text"
-            id="nombre"
-            value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
+            id="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             placeholder="Tu nombre"
             className="w-full mt-3 p-3 border rounded-xl bg-gray-50"
           />
@@ -122,8 +132,8 @@ function Registrar() {
           <input
             type="password"
             id="password2"
-            value={repetirPassword}
-            onChange={(e) => setRepetirPassword(e.target.value)}
+            value={RepeatPassword}
+            onChange={(e) => setRepeatPassword(e.target.value)}
             placeholder="Repetir Password"
             className="w-full mt-3 p-3 border rounded-xl bg-gray-50"
           />
@@ -153,4 +163,4 @@ function Registrar() {
   );
 }
 
-export default Registrar;
+export default Register;

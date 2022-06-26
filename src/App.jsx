@@ -1,11 +1,13 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AuthLayout from "./layouts/AuthLayout";
-import Login from "./paginas/Login";
-import Registrar from "./paginas/Registrar";
-import OlvidePassword from "./paginas/OlvidePassword"
-import NuevoPassword from "./paginas/NuevoPassword"
-import ConfirmarCuenta from "./paginas/ConfirmarCuenta";
- 
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import ForgetPassword from "./pages/"
+import NewPassword from "./pages/NewPassword"
+import ConfirmAccount from "./pages/ConfirmAccount";
+
+
+console.log(import.meta.env.VITE_BACKEND_URL)
 
 function App() {
   return (
@@ -13,10 +15,10 @@ function App() {
       <Routes>
         <Route path="/" element={<AuthLayout />}>
           <Route index element={<Login />} />
-          <Route path="registrar" element={<Registrar />} />
-          <Route path="olvide-password" element={<OlvidePassword />} />
-          <Route path="olvide-password/:token" element={<NuevoPassword />} />
-          <Route path="confirmar/:id" element={<ConfirmarCuenta />} />
+          <Route path="registrar" element={<Register />} />
+          <Route path="olvide-password" element={<ForgetPassword />} />
+          <Route path="olvide-password/:token" element={<NewPassword />} />
+          <Route path="confirmar/:id" element={<ConfirmAccount />} />
         </Route>
       </Routes>
     </BrowserRouter>
