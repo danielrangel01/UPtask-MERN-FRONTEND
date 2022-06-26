@@ -154,7 +154,7 @@ function Register() {
 
         <Link
           className="block text-center my-5 text-slate-500 uppercase text-sm"
-          to="/olvide-password"
+          to="/forget-Password"
         >
           Olvide Mi Password
         </Link>
